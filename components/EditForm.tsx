@@ -1,11 +1,13 @@
-"use client"
+"use client";
 
-import { saveContact } from "@/lib/actions";
+import { updateContact } from "@/lib/actions";
 import { SubmitButton } from "@/components/Buttons";
 import { useActionState } from "react";
+import type { Contact } from "@prisma/client";
 
-export default function CreateForm() {
-  const [state, formAction] = useActionState(saveContact, null);
+export default function EditForm({ contact }: { contact: Contact }) {
+  const updateContactById = updateContact.bind(null, contact.id);
+  const [state, formAction] = useActionState(updateContactById, null);
 
   return (
     <>
@@ -23,6 +25,7 @@ export default function CreateForm() {
             id="name"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             placeholder="Nama Lengkap..."
+            defaultValue={contact.name}
           />
           <div
             id="name-error"
@@ -46,6 +49,7 @@ export default function CreateForm() {
             id="phone"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             placeholder="Nomor WhatsApp"
+            defaultValue={contact.phone}
           />
           <div
             id="phone-error"
@@ -64,7 +68,7 @@ export default function CreateForm() {
             {state?.message}
           </div>
         </div>
-        <SubmitButton label="save" />
+        <SubmitButton label="update" />
       </form>
     </>
   );
